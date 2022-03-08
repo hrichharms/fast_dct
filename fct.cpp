@@ -129,3 +129,41 @@ void fft(
     }
 
 }
+
+
+complex* calculate_fct_twiddles(int N) {
+    complex* twiddles = new complex[N];
+    real phase;
+    for (int k=0; k<N; k++) {
+        phase = -pi * k / (2.0 * N);
+        twiddles[k] = complex(cos(phase), sin(phase));
+    }
+    return twiddles;
+}
+
+
+void reorder(
+    real* input,
+    real* output,
+    int N
+) {
+    for (int k=0; k<N; k++) {
+
+    }
+}
+
+
+void fct(
+    complex* fct_twiddles,
+    real* input,
+    real* output,
+    complex* fft_output,
+    complex* fft_twiddles,
+    int N
+) {
+    // reorder
+
+    // fft
+
+    // twiddle multiplications
+}

@@ -11,6 +11,8 @@ TODO:
 #include <math.h>
 #include <iostream>
 
+using std::cout;
+using std::endl;
 using std::conj;
 using std::cos;
 using std::sin;
@@ -100,12 +102,20 @@ void fft(
 
     // collapse real input into N/2-point complex sequence
     complex* input_complex = new complex[N];
+    cout << "N/2 COLLAPSED: ";
     for (int k=0; k<N/2; k++) {
         input_complex[k] = complex(input[2 * k], input[2 * k + 1]);
+        cout << '|' << input_complex[k];
     }
+    cout << "|\n";
 
     // perform N/2-point FFT on complex sequence
     fft_recursive(twiddles, input_complex, N/2, output, 1);
+    cout << "N/2-POINT FFT OUTPUT: ";
+    for (int k=0; k<N/2; k++) {
+        cout << '|' << output[k];
+    }
+    cout << "|\n";
 
     // derive N-point DFT of input data from N/2-point DFT
     output[N/2] = output[0].real() - output[0].imag();
@@ -147,7 +157,7 @@ void reorder(
     real* output,
     int N
 ) {
-    int n = N << 1;
+    int n = N >> 1;
     for (int k=0; k<n; k++) {
         output[k] = input[2 * k];
         output[n + k] = input[2 * k + 1];
@@ -164,10 +174,51 @@ void fct(
     int N
 ) {
     reorder(input, output, N);
+    cout << "REORDERED: ";
+    for (int k=0; k<N; k++) {
+        cout << '|' << output[k];
+    }
+    cout << "|\n";
 
     fft(fft_twiddles, output, N, fft_output);
+    cout << "FFT OUTPUT: ";
+    for (int k=0; k<N; k++) {
+        cout << '|' << fft_output[k];
+    }
+    cout << "|\n";
 
     for (int k=0; k<N; k++) {
         output[k] = (fct_twiddles[k] * fft_output[k]).real();
     }
+}
+
+
+int main() {
+
+    int N = 16;
+    complex* fct_twiddles = calculate_fct_twiddles(N);
+    real* input = new real[N];
+    real* output = new real[N];
+    complex* fft_output = new complex[N];
+    complex* fft_twiddles = calculate_fft_twiddles(N);
+
+    for (int k=0; k<N; k++) {
+        input[k] = 1 + k%2 * -1;
+    }
+
+    cout << "FCT INPUT: ";
+    for (int k=0; k<N; k++) {
+        cout << '|' << input[k];
+    }
+    cout << "|\n";
+
+    fct(fct_twiddles, input, output, fft_output, fft_twiddles, N);
+
+    cout << "FCT OUTPUT: ";
+    for (int k=0; k<N; k++) {
+        cout << '|' << 2 * output[k];
+    }
+    cout << "|\n";
+
+    return 0;
 }

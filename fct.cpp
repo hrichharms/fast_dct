@@ -1,10 +1,5 @@
 /*
-Radix-2 Out-of-Place DIT FFT Algorithm for 1D Real Input
-
-TODO:
-    - implement IDFT
-    - replace complex number operations with macros
-    - add SIMD build support
+Fast Algorithm for Calculating the Discrete Cosine Transform Using a FFT
 */
 
 #include <complex>

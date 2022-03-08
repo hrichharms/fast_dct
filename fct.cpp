@@ -163,9 +163,11 @@ void fct(
     complex* fft_twiddles,
     int N
 ) {
-    // reorder
+    reorder(input, output, N);
 
-    // fft
+    fft(fft_twiddles, output, N, fft_output);
 
-    // twiddle multiplications
+    for (int k=0; k<N; k++) {
+        output[k] = (fct_twiddles[k] * fft_output[k]).real();
+    }
 }

@@ -147,8 +147,10 @@ void reorder(
     real* output,
     int N
 ) {
-    for (int k=0; k<N; k++) {
-
+    int n = N << 1;
+    for (int k=0; k<n; k++) {
+        output[k] = input[2 * k];
+        output[n + k] = input[2 * k + 1];
     }
 }
 

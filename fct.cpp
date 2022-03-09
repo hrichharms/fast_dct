@@ -14,6 +14,7 @@ typedef double real;
 typedef std::complex<real> complex;
 
 
+const i = complex(0.0, 1.0);
 const double pi=3.141592653589793238462643383279502884197169399375105820974944;
 
 

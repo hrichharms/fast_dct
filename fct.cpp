@@ -4,6 +4,8 @@ Fast Algorithm for Calculating the Discrete Cosine Transform Using a FFT
 
 #include <complex>
 #include <math.h>
+#include <iostream>
+#include <chrono>
 
 using std::conj;
 using std::cos;
@@ -164,4 +166,31 @@ void fct(
     for (int k=0; k<N; k++) {
         output[k] = (fct_twiddles[k] * fft_output[k]).real();
     }
+}
+
+
+int main() {
+
+    using std::chrono::high_resolution_clock;
+    using std::chrono::duration_cast;
+    using std::chrono::duration;
+    using std::chrono::milliseconds;
+
+    complex* fct_twiddles = calculate_fct_twiddles(262144);
+    complex* fft_twiddles = calculate_fft_twiddles(262144);
+    complex* fft_output = new complex[262144];
+
+    real* input = new real[262144];
+    real* output = new real[262144];
+
+    auto t1 = high_resolution_clock::now();
+    fct(fct_twiddles, input, output, fft_output, fft_twiddles, 262144);
+    auto t2 = high_resolution_clock::now();
+
+    duration<double, std::milli> ms_double = t2 - t1;
+
+    std::cout << ms_double.count() << " ms\n";
+
+    return 0;
+
 }
